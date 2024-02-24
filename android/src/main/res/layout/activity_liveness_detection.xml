@@ -90,7 +90,7 @@
         android:id="@+id/tv_instruction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mohon posisikan wajah ditengah frame"
+        android:text="Please position your face in the center of the frame"
         android:gravity="center"
         android:textColor="@color/white"
         android:layout_margin="16dp"

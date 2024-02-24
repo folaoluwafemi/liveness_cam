@@ -16,7 +16,8 @@ import io.flutter.plugin.common.PluginRegistry
 
 
 /** LivenessCamPlugin */
-class LivenessCamPlugin: FlutterPlugin, MethodCallHandler, ActivityAware, PluginRegistry.ActivityResultListener {
+class
+LivenessCamPlugin: FlutterPlugin, MethodCallHandler, ActivityAware, PluginRegistry.ActivityResultListener {
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
