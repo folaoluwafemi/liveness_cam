@@ -1,14 +1,15 @@
-import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
+
 import 'scanned_image.dart';
 
 class FaceIdentifier {
-  static Future<DetectedFace?> scanImage(
-      {required CameraImage cameraImage,
-      required CameraDescription camera}) async {
+  static Future<DetectedFace?> scanImage({
+    required CameraImage cameraImage,
+    required CameraDescription camera,
+  }) async {
     final WriteBuffer allBytes = WriteBuffer();
     for (Plane plane in cameraImage.planes) {
       allBytes.putUint8List(plane.bytes);
@@ -28,23 +29,29 @@ class FaceIdentifier {
 
     final planeData = cameraImage.planes.map(
       (Plane plane) {
-        return InputImagePlaneMetadata(
+        return InputImageMetadata(
           bytesPerRow: plane.bytesPerRow,
-          height: plane.height,
-          width: plane.width,
+          format: InputImageFormat.nv21,
+          rotation: imageRotation,
+          size: Size(
+            plane.width?.toDouble() ?? 0,
+            plane.height?.toDouble() ?? 0,
+          ),
         );
       },
     ).toList();
 
-    final inputImageData = InputImageData(
+    final inputImageData = InputImageMetadata(
       size: imageSize,
-      imageRotation: imageRotation,
-      inputImageFormat: inputImageFormat,
-      planeData: planeData,
+      rotation: imageRotation,
+      format: inputImageFormat,
+      bytesPerRow: cameraImage.planes[0].bytesPerRow,
     );
 
-    final visionImage =
-        InputImage.fromBytes(bytes: bytes, inputImageData: inputImageData);
+    final visionImage = InputImage.fromBytes(
+      bytes: bytes,
+      metadata: inputImageData,
+    );
     DetectedFace? result;
     final face = await _detectFace(visionImage: visionImage);
     if (face != null) {
