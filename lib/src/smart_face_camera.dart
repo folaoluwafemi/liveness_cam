@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'face_identifier.dart';
-import 'scanned_image.dart';
-import 'face_painter.dart';
+
 import 'builders.dart';
+import 'face_identifier.dart';
+import 'face_painter.dart';
+import 'scanned_image.dart';
 
 class SmartFaceCamera extends StatefulWidget {
   final String? message;
@@ -13,14 +15,17 @@ class SmartFaceCamera extends StatefulWidget {
   final void Function(File? image) onCapture;
   final MessageBuilder? messageBuilder;
 
-  const SmartFaceCamera(
-      {this.message,
-      this.messageStyle = const TextStyle(
-          fontSize: 14, height: 1.5, fontWeight: FontWeight.w400),
-      required this.onCapture,
-      this.messageBuilder,
-      Key? key})
-      : super(key: key);
+  const SmartFaceCamera({
+    this.message,
+    this.messageStyle = const TextStyle(
+      fontSize: 14,
+      height: 1.5,
+      fontWeight: FontWeight.w400,
+    ),
+    required this.onCapture,
+    this.messageBuilder,
+    super.key,
+  });
 
   @override
   // ignore: library_private_types_in_public_api
@@ -134,11 +139,13 @@ class _SmartFaceCameraState extends State<SmartFaceCamera>
             ),
           )
         ] else ...[
-          const Text('No Camera Detected',
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w500,
-              )),
+          const Text(
+            'No Camera Detected',
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ],
       ],
     );
@@ -191,7 +198,7 @@ class _SmartFaceCameraState extends State<SmartFaceCamera>
     final CameraController? cameraController = _controller;
     try {
       cameraController!.stopImageStream().whenComplete(() async {
-        await Future.delayed(const Duration(milliseconds: 500));
+        await Future.delayed(const Duration(milliseconds: 1500));
         takePicture().then((XFile? file) {
           /// Return image callback
           widget.onCapture(File(file!.path));
@@ -252,8 +259,9 @@ class _SmartFaceCameraState extends State<SmartFaceCamera>
       _alreadyCheckingImage = true;
       try {
         await FaceIdentifier.scanImage(
-                cameraImage: cameraImage, camera: cameraController!.description)
-            .then((result) async {
+          cameraImage: cameraImage,
+          camera: cameraController!.description,
+        ).then((result) async {
           setState(() => _detectedFace = result);
 
           if (result != null) {

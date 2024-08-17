@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -16,8 +17,12 @@ class LivenessCam {
           return File("$result".replaceAll("file:/", ""));
         }
       } else if (Platform.isIOS) {
-        var result = await Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const CameraPage()));
+        var result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const CameraPage(),
+          ),
+        );
         if (result != null) {
           return result as File;
         }
